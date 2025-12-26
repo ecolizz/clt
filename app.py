@@ -28,10 +28,54 @@ COLORS = {
     "report_bg": "#F7FFFF",
     "tax_bg": "#FFFBE6",
 }
+# After your new COLORS dict:
+COLORS.update({
+    # legacy keys used elsewhere in your app
+    "pink": COLORS["hot_pink"],
+    "purple": COLORS["electric_purple"],
+    "blue": COLORS["sky_blue"],
+    "yellow": COLORS["sun_yellow"],
+    "green": COLORS["mint"],
+    "teal": COLORS["neon_teal"],
+
+    # if older code uses these too
+    "button_fg": "#FFFFFF",
+})
 
 # ----------------------------
 # Helpers (ported from your Tkinter logic)
 # ----------------------------
+import html
+
+def lisa_report_box(text: str, bg1: str, bg2: str, border: str):
+    safe = html.escape(text or "")
+    st.markdown(
+        f"""
+        <div style="
+            background: linear-gradient(135deg, {bg1}, {bg2});
+            border-radius: 22px;
+            padding: 18px 18px;
+            border: 5px dashed {border};
+            box-shadow:
+                0 0 0 3px rgba(255,255,255,0.55),
+                0 14px 30px rgba(0,0,0,0.25);
+            overflow-x: auto;
+        ">
+          <pre style="
+              margin: 0;
+              font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
+              font-size: 0.95rem;
+              line-height: 1.25rem;
+              color: {COLORS['text']};
+              white-space: pre;      /* KEY: do NOT wrap */
+              overflow-x: auto;      /* scroll horizontally if needed */
+          ">{safe}</pre>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def parse_sales_summary(s_df: pd.DataFrame) -> dict[str, float]:
     out = {}
     for _, row in s_df.iterrows():
@@ -421,32 +465,13 @@ with tab1:
 
     st.subheader("Report")
     #st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
-    st.markdown(
-    f"""
-    <div style="
-        background: linear-gradient(135deg,
-            {COLORS['report_bg']},
-            {COLORS['mint']});
-        border-radius: 20px;
-        padding: 18px;
-        border: 4px dashed {COLORS['hot_pink']};
-        box-shadow:
-            inset 0 0 12px rgba(0,0,0,.15),
-            0 10px 25px rgba(0,0,0,.25);
-    ">
-        <pre style="
-            margin: 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
-            color: {COLORS['text']};
-            white-space: pre-wrap;
-        ">
-{st.session_state.report_text or "Load files and click GENERATE REPORT..."}
-        </pre>
-    </div>
-    """,
-    unsafe_allow_html=True
+  lisa_report_box(
+    st.session_state.report_text or "Load files and click GENERATE REPORT...",
+    bg1=COLORS["report_bg"],
+    bg2=COLORS["mint"],
+    border=COLORS["hot_pink"]
 )
+
 
 
 with tab2:
@@ -476,40 +501,12 @@ with tab3:
         st.success("Tax recalculated!")
 
     #st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
-    st.markdown(
-    f"""
-    <div style="
-        background: linear-gradient(135deg,
-            {COLORS['tax_bg']},
-            {COLORS['sun_yellow']});
-        border-radius: 20px;
-        padding: 18px;
-        border: 4px solid {COLORS['electric_purple']};
-        box-shadow:
-            inset 0 0 10px rgba(0,0,0,.15),
-            0 0 18px {COLORS['neon_teal']};
-    ">
-        <pre style="
-            margin: 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
-            color: {COLORS['text']};
-            white-space: pre-wrap;
-        ">
-{st.session_state.tax_text or "Generate a P&L report, then recalculate taxes."}
-        </pre>
-    </div>
-    """,
-    unsafe_allow_html=True
+    lisa_report_box(
+    st.session_state.tax_text or "Generate a P&L report, then recalculate taxes.",
+    bg1=COLORS["tax_bg"],
+    bg2=COLORS["sun_yellow"],
+    border=COLORS["electric_purple"]
 )
 
-    if st.session_state.tax_text:
-        st.download_button(
-            "SAVE TAX REPORT",
-            data=st.session_state.tax_text.encode("utf-8"),
-            file_name=f"Tax_Report_{datetime.date.today().isoformat()}.txt",
-            mime="text/plain",
-            use_container_width=True,
-        )
 
 
