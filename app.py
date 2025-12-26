@@ -507,15 +507,7 @@ with tab3:
         st.session_state.tax_text = tax_txt
         st.success("Tax recalculated!")
 
-    #st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
-    # NEW: use lisa_report_box for the tax output
-    lisa_report_box(
-        title="Estimated Taxes",
-        text=st.session_state.get("tax_text") or "Generate a P&L report, then recalculate taxes.",
-        bg1=COLORS.get("tax_bg", "#FFFBE6"),
-        bg2=COLORS.get("sun_yellow", "#FFF44F"),
-        border=COLORS.get("electric_purple", "#9B5CFF"),
-    )
+    st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
 
     # Download button (unchanged)
     if st.session_state.get("tax_text"):
@@ -526,6 +518,7 @@ with tab3:
             mime="text/plain",
             use_container_width=True,
         )
+
 
 
 
