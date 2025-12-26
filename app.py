@@ -12,21 +12,22 @@ import streamlit_authenticator as stauth
 # Theme colors (same vibe as your Tkinter palette)
 # ----------------------------
 COLORS = {
-    "pink": "#FF69B4",
-    "purple": "#9370DB",
-    "blue": "#40E0D0",
-    "yellow": "#FFD700",
-    "green": "#71d411",
-    "red": "#DC143C",
-    "light_bg": "#F0F8FF",
-    "dark_bg": "#8A2BE2",
-    "text": "#4B0082",
-    "button_fg": "#FFFFFF",
-    "report_bg": "#E0FFFF",
-    "tax_bg": "#FFFACD",
-    "teal": "#00CED1",
-}
+    "hot_pink": "#FF4FD8",
+    "bubblegum": "#FF9BEF",
+    "electric_purple": "#9B5CFF",
+    "neon_teal": "#00F5FF",
+    "sun_yellow": "#FFF44F",
+    "mint": "#7CFFCB",
+    "sky_blue": "#5CD3FF",
+    "lavender": "#E6C8FF",
 
+    "dark_bg": "#3A007A",
+    "light_bg": "#FFF7FE",
+    "text": "#3A007A",
+
+    "report_bg": "#F7FFFF",
+    "tax_bg": "#FFFBE6",
+}
 
 # ----------------------------
 # Helpers (ported from your Tkinter logic)
@@ -217,23 +218,82 @@ st.set_page_config(page_title="Custom Lash Therapy Suite", layout="wide")
 st.markdown(
     f"""
     <style>
-      .stApp {{
-        background: {COLORS["dark_bg"]};
-      }}
-      .block-container {{
-        background: {COLORS["light_bg"]};
-        border-radius: 18px;
-        padding: 1.2rem 1.2rem 2.0rem 1.2rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      }}
-      h1, h2, h3, p, label, div {{
+
+    /* 🌈 App background */
+    .stApp {{
+        background: radial-gradient(circle at top left,
+            {COLORS["hot_pink"]},
+            {COLORS["electric_purple"]},
+            {COLORS["dark_bg"]});
+    }}
+
+    /* 🧁 Main content card */
+    .block-container {{
+        background: linear-gradient(135deg,
+            {COLORS["light_bg"]},
+            {COLORS["lavender"]});
+        border-radius: 22px;
+        padding: 1.6rem 1.6rem 2.4rem 1.6rem;
+        box-shadow:
+            0 0 0 4px {COLORS["bubblegum"]},
+            0 20px 40px rgba(0,0,0,.35);
+    }}
+
+    /* ✨ Fonts */
+    h1, h2, h3, label, p, div {{
         color: {COLORS["text"]} !important;
-        font-family: "Comic Sans MS", sans-serif;
-      }}
+        font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+    }}
+
+    h1 {{
+        text-shadow: 2px 2px 0 {COLORS["sun_yellow"]};
+    }}
+
+    /* 🌈 Tabs */
+    button[data-baseweb="tab"] {{
+        background: linear-gradient(135deg,
+            {COLORS["bubblegum"]},
+            {COLORS["electric_purple"]});
+        color: white !important;
+        border-radius: 16px;
+        margin-right: 6px;
+        font-weight: 800;
+        box-shadow: 0 4px 10px rgba(0,0,0,.25);
+    }}
+
+    button[data-baseweb="tab"][aria-selected="true"] {{
+        background: linear-gradient(135deg,
+            {COLORS["sun_yellow"]},
+            {COLORS["neon_teal"]});
+        color: {COLORS["dark_bg"]} !important;
+        box-shadow: 0 0 12px {COLORS["neon_teal"]};
+    }}
+
+    /* 💎 Buttons */
+    .stButton>button {{
+        background: linear-gradient(135deg,
+            {COLORS["hot_pink"]},
+            {COLORS["neon_teal"]});
+        color: white;
+        border-radius: 18px;
+        font-weight: 900;
+        border: none;
+        box-shadow:
+            0 6px 14px rgba(0,0,0,.35),
+            inset 0 0 8px rgba(255,255,255,.6);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }}
+
+    .stButton>button:hover {{
+        transform: scale(1.05);
+        box-shadow: 0 0 18px {COLORS["sun_yellow"]};
+    }}
+
     </style>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
+
 
 
 # ----------------------------
@@ -286,7 +346,13 @@ if "tax_text" not in st.session_state:
 # UI Tabs (like your Notebook)
 # ----------------------------
 st.title("Custom Lash Therapy: Financials & Tax Suite")
-tab1, tab2, tab3 = st.tabs(["P&L & Reports", "Charts & Analytics", "Tax Estimator"])
+#tab1, tab2, tab3 = st.tabs(["P&L & Reports", "Charts & Analytics", "Tax Estimator"])
+tab1, tab2, tab3 = st.tabs([
+    "💖 P&L & Reports",
+    "📊 Charts & Analytics",
+    "🧾 Tax Estimator"
+])
+
 
 with tab1:
     st.subheader("Import Data")
@@ -354,7 +420,34 @@ with tab1:
             st.button("DOWNLOAD TO EXCEL", disabled=True, use_container_width=True)
 
     st.subheader("Report")
-    st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
+    #st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
+    st.markdown(
+    f"""
+    <div style="
+        background: linear-gradient(135deg,
+            {COLORS['report_bg']},
+            {COLORS['mint']});
+        border-radius: 20px;
+        padding: 18px;
+        border: 4px dashed {COLORS['hot_pink']};
+        box-shadow:
+            inset 0 0 12px rgba(0,0,0,.15),
+            0 10px 25px rgba(0,0,0,.25);
+    ">
+        <pre style="
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: {COLORS['text']};
+            white-space: pre-wrap;
+        ">
+{st.session_state.report_text or "Load files and click GENERATE REPORT..."}
+        </pre>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 with tab2:
     st.subheader("Charts & Analytics")
@@ -382,7 +475,33 @@ with tab3:
         st.session_state.tax_text = tax_txt
         st.success("Tax recalculated!")
 
-    st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
+    #st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
+    st.markdown(
+    f"""
+    <div style="
+        background: linear-gradient(135deg,
+            {COLORS['tax_bg']},
+            {COLORS['sun_yellow']});
+        border-radius: 20px;
+        padding: 18px;
+        border: 4px solid {COLORS['electric_purple']};
+        box-shadow:
+            inset 0 0 10px rgba(0,0,0,.15),
+            0 0 18px {COLORS['neon_teal']};
+    ">
+        <pre style="
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: {COLORS['text']};
+            white-space: pre-wrap;
+        ">
+{st.session_state.tax_text or "Generate a P&L report, then recalculate taxes."}
+        </pre>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
     if st.session_state.tax_text:
         st.download_button(
@@ -392,4 +511,5 @@ with tab3:
             mime="text/plain",
             use_container_width=True,
         )
+
 
