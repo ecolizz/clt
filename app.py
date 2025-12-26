@@ -240,29 +240,29 @@ st.markdown(
 # Login (2 users) from st.secrets
 # ----------------------------
 # Secrets come from Streamlit Cloud Secrets UI (recommended) or local .streamlit/secrets.toml
-creds = st.secrets["auth"]["credentials"]
-cookie_name = st.secrets["auth"]["cookie"]["name"]
-cookie_key = st.secrets["auth"]["cookie"]["key"]
-cookie_expiry_days = int(st.secrets["auth"]["cookie"]["expiry_days"])
+# creds = st.secrets["auth"]["credentials"]
+# cookie_name = st.secrets["auth"]["cookie"]["name"]
+# cookie_key = st.secrets["auth"]["cookie"]["key"]
+# cookie_expiry_days = int(st.secrets["auth"]["cookie"]["expiry_days"])
 
-authenticator = stauth.Authenticate(
-    creds,
-    cookie_name=cookie_name,
-    cookie_key=cookie_key,
-    cookie_expiry_days=cookie_expiry_days,
-)
+# authenticator = stauth.Authenticate(
+#     creds,
+#     cookie_name=cookie_name,
+#     cookie_key=cookie_key,
+#     cookie_expiry_days=cookie_expiry_days,
+# )
 
-name, authentication_status, username = authenticator.login("Login", "main")
+# name, authentication_status, username = authenticator.login("Login", "main")
 
-if authentication_status is False:
-    st.error("Username/password is incorrect.")
-    st.stop()
-elif authentication_status is None:
-    st.warning("Please enter your username and password.")
-    st.stop()
+# if authentication_status is False:
+#     st.error("Username/password is incorrect.")
+#     st.stop()
+# elif authentication_status is None:
+#     st.warning("Please enter your username and password.")
+#     st.stop()
 
-authenticator.logout("Logout", "sidebar")
-st.sidebar.success(f"Signed in as: {name}")
+# authenticator.logout("Logout", "sidebar")
+# st.sidebar.success(f"Signed in as: {name}")
 
 
 # ----------------------------
@@ -392,3 +392,4 @@ with tab3:
             mime="text/plain",
             use_container_width=True,
         )
+
