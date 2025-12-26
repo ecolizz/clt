@@ -61,35 +61,30 @@ def lisa_report_box(title: str, text: str, bg1: str, bg2: str, border: str):
 
     st.markdown(
         f"""
-        <div style="
-            background: linear-gradient(135deg, {bg1}, {bg2});
-            border-radius: 22px;
-            padding: 18px;
-            border: 6px dashed {border};
-            box-shadow:
-                0 0 0 3px rgba(255,255,255,0.55),
-                0 14px 30px rgba(0,0,0,0.25);
-            overflow-x: auto;
-        ">
+<div style="
+    background: linear-gradient(135deg, {bg1}, {bg2});
+    border-radius: 22px;
+    padding: 18px;
+    border: 6px dashed {border};
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,0.55),
+        0 14px 30px rgba(0,0,0,0.25);
+    overflow-x: auto;
+">
 <pre style="
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0;
+    padding: 0;
 
-    /* Use a font that supports box-drawing characters well */
-    font-family: Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', 'Courier New', monospace !important;
-    font-size: 13px !important;
-    line-height: 1.25 !important;
-    color: {COLORS['text']} !important;
+    font-family: Consolas, 'Cascadia Mono', 'DejaVu Sans Mono',
+                 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.25;
+    color: {COLORS['text']};
 
-    /* CRITICAL: prevent wrapping so the table stays aligned */
-    white-space: pre !important;
-    overflow-wrap: normal !important;
-    word-break: normal !important;
-
-    /* allow horizontal scroll */
-    overflow-x: auto !important;
+    white-space: pre;
+    overflow-x: auto;
 ">{safe}</pre>
-        </div>
+</div>
         """,
         unsafe_allow_html=True
     )
@@ -484,16 +479,7 @@ with tab1:
             st.button("DOWNLOAD TO EXCEL", disabled=True, use_container_width=True)
 
     st.subheader("Report")
-    #st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
-    lisa_report_box(
-        title="Report",
-        text=st.session_state.get("report_text") or "Load files and click GENERATE REPORT...",
-        bg1=COLORS["report_bg"],
-        bg2=COLORS["mint"],
-        border=COLORS["hot_pink"],
-    )
-
-
+    st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
 
 with tab2:
     st.subheader("Charts & Analytics")
@@ -540,6 +526,7 @@ with tab3:
             mime="text/plain",
             use_container_width=True,
         )
+
 
 
 
