@@ -29,51 +29,71 @@ COLORS = {
     "tax_bg": "#FFFBE6",
 }
 # After your new COLORS dict:
+# --- legacy / compatibility keys used elsewhere (charts, etc.) ---
 COLORS.update({
-    # legacy keys used elsewhere in your app
-    "pink": COLORS["hot_pink"],
-    "purple": COLORS["electric_purple"],
-    "blue": COLORS["sky_blue"],
-    "yellow": COLORS["sun_yellow"],
-    "green": COLORS["mint"],
-    "teal": COLORS["neon_teal"],
+    "pink": COLORS.get("hot_pink", "#FF4FD8"),
+    "purple": COLORS.get("electric_purple", "#9B5CFF"),
+    "blue": COLORS.get("sky_blue", "#5CD3FF"),
+    "yellow": COLORS.get("sun_yellow", "#FFF44F"),
+    "green": COLORS.get("mint", "#7CFFCB"),
+    "teal": COLORS.get("neon_teal", "#00F5FF"),
 
-    # if older code uses these too
-    "button_fg": "#FFFFFF",
+    # IMPORTANT: define red if anything still uses it
+    "red": "#FF2D55",  # neon-ish red/pink
+
+    # if older code expects these
+    "report_bg": COLORS.get("report_bg", "#F7FFFF"),
+    "tax_bg": COLORS.get("tax_bg", "#FFFBE6"),
+    "text": COLORS.get("text", "#3A007A"),
 })
+
 
 # ----------------------------
 # Helpers (ported from your Tkinter logic)
 # ----------------------------
 import html
+import streamlit as st
 
-def lisa_report_box(text: str, bg1: str, bg2: str, border: str):
+def lisa_report_box(title: str, text: str, bg1: str, bg2: str, border: str):
     safe = html.escape(text or "")
+
+    st.markdown(f"### {title}")
+
     st.markdown(
         f"""
         <div style="
             background: linear-gradient(135deg, {bg1}, {bg2});
             border-radius: 22px;
-            padding: 18px 18px;
-            border: 5px dashed {border};
+            padding: 18px;
+            border: 6px dashed {border};
             box-shadow:
                 0 0 0 3px rgba(255,255,255,0.55),
                 0 14px 30px rgba(0,0,0,0.25);
             overflow-x: auto;
         ">
-          <pre style="
-              margin: 0;
-              font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
-              font-size: 0.95rem;
-              line-height: 1.25rem;
-              color: {COLORS['text']};
-              white-space: pre;      /* KEY: do NOT wrap */
-              overflow-x: auto;      /* scroll horizontally if needed */
-          ">{safe}</pre>
+<pre style="
+    margin: 0 !important;
+    padding: 0 !important;
+
+    /* Use a font that supports box-drawing characters well */
+    font-family: Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', 'Courier New', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    color: {COLORS['text']} !important;
+
+    /* CRITICAL: prevent wrapping so the table stays aligned */
+    white-space: pre !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+
+    /* allow horizontal scroll */
+    overflow-x: auto !important;
+">{safe}</pre>
         </div>
         """,
         unsafe_allow_html=True
     )
+
 
 
 def parse_sales_summary(s_df: pd.DataFrame) -> dict[str, float]:
@@ -466,10 +486,11 @@ with tab1:
     st.subheader("Report")
     #st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
     lisa_report_box(
-        st.session_state.report_text or "Load files and click GENERATE REPORT...",
+        title="Report",
+        text=st.session_state.get("report_text") or "Load files and click GENERATE REPORT...",
         bg1=COLORS["report_bg"],
         bg2=COLORS["mint"],
-        border=COLORS["hot_pink"]
+        border=COLORS["hot_pink"],
     )
 
 
@@ -507,6 +528,7 @@ with tab3:
         bg2=COLORS["sun_yellow"],
         border=COLORS["electric_purple"]
     )
+
 
 
 
