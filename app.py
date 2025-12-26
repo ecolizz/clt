@@ -465,12 +465,12 @@ with tab1:
 
     st.subheader("Report")
     #st.code(st.session_state.report_text or "Load files and click GENERATE REPORT...", language="text")
-  lisa_report_box(
-    st.session_state.report_text or "Load files and click GENERATE REPORT...",
-    bg1=COLORS["report_bg"],
-    bg2=COLORS["mint"],
-    border=COLORS["hot_pink"]
-)
+    lisa_report_box(
+        st.session_state.report_text or "Load files and click GENERATE REPORT...",
+        bg1=COLORS["report_bg"],
+        bg2=COLORS["mint"],
+        border=COLORS["hot_pink"]
+    )
 
 
 
@@ -502,11 +502,12 @@ with tab3:
 
     #st.code(st.session_state.tax_text or "Generate a P&L report to populate net profit, then recalculate taxes.", language="text")
     lisa_report_box(
-    st.session_state.tax_text or "Generate a P&L report, then recalculate taxes.",
-    bg1=COLORS["tax_bg"],
-    bg2=COLORS["sun_yellow"],
-    border=COLORS["electric_purple"]
-)
+        st.session_state.tax_text or "Generate a P&L report, then recalculate taxes.",
+        bg1=COLORS["tax_bg"],
+        bg2=COLORS["sun_yellow"],
+        border=COLORS["electric_purple"]
+    )
+
 
 
 
